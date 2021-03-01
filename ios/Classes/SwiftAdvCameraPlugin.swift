@@ -25,37 +25,12 @@ public class SwiftAdvCameraPlugin: NSObject, FlutterPlugin {
     private func checkForPermission(result: @escaping FlutterResult)-> Void {
         checkForCameraPermission() { (accepted) in
             if accepted{
-                self.checkForStoragePermission() { (accepted) in
-                    if accepted{
-                        result(true)
-                    } else {
-                        result(false)
-                    }
-                }
+                result(true)
             } else {
                 result(false)
             }
         }
         
-    }
-    
-    private func checkForStoragePermission(handleFinish: @escaping (_ isOK:Bool)->())-> Void {
-        let storageStatus = PHPhotoLibrary.authorizationStatus()
-        
-        if storageStatus != PHAuthorizationStatus.authorized {
-            PHPhotoLibrary.requestAuthorization { status in
-                switch status {
-                case .authorized:
-                    handleFinish(true)
-                    break;
-                default:
-                    handleFinish(false)
-                    break;
-                }
-            }
-        } else {
-            handleFinish(true)
-        }
     }
     
     private func checkForCameraPermission(handleFinish:@escaping (_ isOK:Bool)->())-> Void {
